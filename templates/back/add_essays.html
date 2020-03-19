@@ -1,0 +1,59 @@
+{% extends 'back/back_stage.html' %}
+
+
+{% block content %}
+    <hr>
+    <h2>添加随笔</h2>
+    <hr>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p><label for="title">标题</label>
+            <input type="text" class="form-control" name="title" id="title"></p>
+        <p><textarea id="editor_id" name="content" style="width:700px;height:300px;">
+
+            </textarea></p>
+        <hr>
+        <p>个人分类</p>
+
+        <p>
+
+            {% for category in category_list %}
+                <label style="padding-right: 100px"><input name="category" type="radio"
+                                                           value="{{ category.pk }}"/>{{ category.name }} </label>
+
+            {% endfor %}
+
+        </p>
+        <hr>
+        <p>
+            个人标签
+        </p>
+        <hr>
+        <p>
+            {% for tag in tag_list %}
+
+                <label style="padding-right: 100px"><input name="tag" type="checkbox"
+                                                           value="{{ tag.pk }}"/>{{ tag.name }} </label>
+
+            {% endfor %}
+
+        </p>
+        <button class="btn btn-success">
+            发布
+        </button>
+    </form>
+
+    <div style="margin-bottom: 300px">
+
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script charset="utf-8" src="/static/kindeditor/kindeditor-all-min.js"></script>
+    <script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
+    <script>
+        KindEditor.ready(function (K) {
+            window.editor = K.create('#editor_id');
+        });
+    </script>
+{% endblock %}

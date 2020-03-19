@@ -1,0 +1,68 @@
+{% extends 'blog/master.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <form class="form-group" id="form-list">
+                {% for foo in my_reg %}
+                    <p>
+                    <label for="{{ foo.auto_id }}">{{ foo.label }}</label>
+                    {{ foo }}
+                    <span style="color: red">{{ foo.errors }}</span>
+                    </p>
+                {% endfor %}
+                <label for="avatar">头像:
+                    <img id="my-avatar" src="/static/img/default.jpg" alt="" width='100'>
+
+                </label>
+                <input id="avatar" type="file" style="display: none">
+                <p>
+                    <a class="btn-primary btn btn-lg" id="submit-register">注册</a>
+                </p>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $('#avatar').change(function () {
+            let fileReader = new FileReader();
+            fileReader.readAsDataURL($(this)[0].files[0]);
+            fileReader.onload = function () {
+                $('#my-avatar').attr('src', fileReader.result);
+            }
+        });
+
+
+        $('#submit-register').on('click', function () {
+            let formData = new FormData();
+            $.each($('#form-list').serializeArray(), function (index, value) {
+                console.log(index, value);
+                formData.append(value.name, value.value)
+            });
+            formData.append('csrfmiddlewaretoken','{{ csrf_token }}');
+            formData.append('avatar',$('#avatar')[0].files[0]);
+            $.ajax({
+                url: '',
+                type: 'post',
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (data) {
+                    if (data.code == 1000 ){
+                        location.href = data.url;
+                    } else {
+                        $.each(data.msg, function (key, value) {
+                            let name = '#id_' + key;
+                            $(name).next().text(value)
+                        })
+                    }
+                }
+            })
+
+
+        })
+    </script>
+{% endblock %}

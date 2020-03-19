@@ -1,0 +1,74 @@
+{% extends 'blog/master.html' %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <form id="form-list">
+                <p>
+                    <label for="username">用户名：</label>
+                    <input class="form-control" type="text" name="username" id="username">
+                </p>
+                <p>
+                    <label for="password">密码：</label>
+                    <input class="form-control" type="password" name="password" id="password">
+                </p>
+
+                <div>
+                    <label for="">验证码：</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input class="form-control" type="text" id="verification" name="verification">
+                        </div>
+                        <div class="col-md-6">
+                            <img src="/get_verification/" alt="" id="picture" width="230" height="35">
+                        </div>
+
+                    </div>
+                </div>
+                <div style="margin-top: 20px" class="text-center">
+                    <a class="btn btn-primary btn-lg" id="login1">登陆</a>
+                    <span>&nbsp;&nbsp;&nbsp;还没有账号，快去</span><a href="/register/">注册吧</a>
+                    <p><span id="errors" style="color: red"></span></p>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $('#login1').click(function () {
+            console.log(123);
+            $.ajax({
+                url: '',
+                type: 'post',
+                data: {
+                    'username': $('#username').val(),
+                    'password': $('#password').val(),
+                    'verification': $('#verification').val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    if (data.code == 1000) {
+                        location.href = data.url;
+                    } else {
+                        $('#errors').text(data.msg)
+                    }
+                }
+            })
+        });
+        $('#picture').on('click', function () {
+            let oldUrl = $(this).attr('src');
+            $(this).attr('src', oldUrl + '?')
+        })
+    </script>
+{% endblock %}
+
+
+
+
+

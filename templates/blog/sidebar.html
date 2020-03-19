@@ -1,0 +1,35 @@
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">分类列表</h3>
+    </div>
+    <div class="panel-body">
+        {% for category in category_list %}
+            <p><a href="/{{ username }}/category/{{ category.pk }}/">{{ category.name }}({{ category.num }})</a></p>
+        {% endfor %}
+
+    </div>
+</div>
+
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">标签列表</h3>
+    </div>
+    <div class="panel-body">
+        {% for tag in tag_list %}
+            <p><a href="/{{ username }}/tag/{{ tag.pk }}/">{{ tag.name }}({{ tag.num }})</a></p>
+        {% endfor %}
+    </div>
+</div>
+
+
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h3 class="panel-title">时间分类</h3>
+    </div>
+    <div class="panel-body">
+        {% for datee in date_list %}
+            <p><a href="/{{ username }}/achieve/{{ datee.month|date:'Y-m' }}/">{{ datee.month|date:'Y年m月' }}({{ datee.num }})</a></p>
+        {% endfor %}
+    </div>
+</div>
